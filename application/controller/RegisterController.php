@@ -22,11 +22,20 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        if (LoginModel::isUserLoggedIn()) {
-            Redirect::home();
-        } else {
-            $this->View->render('register/index');
+        //Only logged-in admins are allowed to access the form
+        if(!LoginModel::isUserLoggedIn()){
+            Redirect::to('login/index');
+            exit;
         }
+
+        //user_account_type 7 is used for admin accounts
+        if(Session::get('user_account_type')!= 7){
+            Redirect::home();
+            exit;
+        }
+
+        //Render the register view for admins
+        $this->View->render('register/index');
     }
 
     /**
@@ -35,11 +44,26 @@ class RegisterController extends Controller
      */
     public function register_action()
     {
+        //Security check, prevents guests and normal users from creating accounts via direct POST request
+        if(!LoginModel::isUserLoggedIn()){
+            Redirect::to('login/index');
+            exit;
+        }
+
+        //user_account_type 7 is used for admin accounts
+        if(Session::get('user_account_type') != 7){
+            Redirect::home();
+            exit;
+        }
+
         $registration_successful = RegistrationModel::registerNewUser();
 
-        if ($registration_successful) {
-            Redirect::to('login/index');
-        } else {
+        if($registration_successful){
+            //Staying on the register page so admin can create more users
+            Redirect::to('register/index');
+        }
+        else{
+            //Return to register form if user creation failed
             Redirect::to('register/index');
         }
     }
