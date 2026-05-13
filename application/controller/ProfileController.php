@@ -17,7 +17,8 @@ class ProfileController extends Controller
     public function index()
     {
         $this->View->render('profile/index', array(
-            'users' => UserModel::getPublicProfilesOfAllUsers())
+            'users' => UserModel::getPublicProfilesOfAllUsers(),
+            'account_types' => UserModel::getAllAccountTypes())
         );
     }
 
@@ -35,5 +36,15 @@ class ProfileController extends Controller
         } else {
             Redirect::home();
         }
+    }
+
+    public function changeUserRole(){
+        if(Session::get('user_account_type') != 7){
+            Redirect::to('profile/index');
+        }
+
+        UserModel::changeUserAccountType(Request::post('user_id'), Request::post('user_account_type'));
+
+        Redirect::to('profile/index');
     }
 }

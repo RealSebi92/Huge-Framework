@@ -21,6 +21,7 @@
                     <td>Username</td>
                     <td>User's email</td>
                     <td>Activated ?</td>
+                    <td>Account Type</td>
                     <td>Link to user's profile</td>
                     <td>suspension Time in days</td>
                     <td>Soft delete</td>
@@ -38,6 +39,20 @@
                         <td><?= $user->user_name; ?></td>
                         <td><?= $user->user_email; ?></td>
                         <td><?= ($user->user_active == 0 ? 'No' : 'Yes'); ?></td>
+                        <td>
+                            <form method="post" action="<?= Config::get('URL'); ?>profile/changeUserRole">
+                                <input type="hidden" name="user_id" value="<?= $user->user_id; ?>">
+
+                                <select name="user_account_type" onchange="this.form.submit()">
+                                    <?php foreach ($this->account_types as $account_type) { ?>
+                                        <option value="<?= $account_type->type_id; ?>"
+                                            <?php if ($user->user_account_type == $account_type->type_id) echo 'selected'; ?>>
+                                            <?= $account_type->type_name; ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </form>
+                        </td>
                         <td>
                             <a href="<?= Config::get('URL') . 'profile/showProfile/' . $user->user_id; ?>">Profile</a>
                         </td>
