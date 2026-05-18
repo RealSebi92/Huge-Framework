@@ -11,7 +11,7 @@
             build things that use profile information of one or multiple/all users.
         </div>
         <div>
-            <table class="overview-table">
+            <table id="usersTable" class="overview-table">
                 <thead>
                 <tr>
                     <td>Id</td>
@@ -19,7 +19,7 @@
                     <td>Username</td>
                     <td>User's email</td>
                     <td>Activated ?</td>
-                    <td>Account Type</td>
+                    <td>Account Type</td> <!-- Display the current account type of the user -->
                     <td>Link to user's profile</td>
                 </tr>
                 </thead>
@@ -35,6 +35,7 @@
                         <td><?= $user->user_email; ?></td>
                         <td><?= ($user->user_active == 0 ? 'No' : 'Yes'); ?></td>
                         <td>
+                            <!-- Load account type names dynamically from the database -->
                            <?php foreach ($this->account_types as $account_type) { ?>
                                 <?php if ($user->user_account_type == $account_type->type_id) { ?>
                                     <?= $account_type->type_name; ?>
@@ -48,6 +49,12 @@
                     </tr>
                 <?php } ?>
             </table>
+            <!-- Initialising DataTable-->
+            <script>
+                document.addEventListener('DOMContentLoaded', function(){
+                    new DataTable('#usersTable');
+                });
+            </script>
         </div>
     </div>
 </div>

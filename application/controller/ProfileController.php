@@ -13,6 +13,7 @@ class ProfileController extends Controller
     /**
      * This method controls what happens when you move to /overview/index in your app.
      * Shows a list of all users.
+     * Loads all users and accout types so their role names can be displayed
      */
     public function index()
     {
@@ -38,6 +39,10 @@ class ProfileController extends Controller
         }
     }
 
+    /**
+     * Changes the Role of a selected user
+     * Only for admins
+     */
     public function changeUserRole(){
         if(Session::get('user_account_type') != 7){
             Redirect::to('profile/index');

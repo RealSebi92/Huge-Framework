@@ -8,6 +8,9 @@
     <link rel="icon" href="data:;base64,=">
     <!-- CSS -->
     <link rel="stylesheet" href="<?php echo Config::get('URL'); ?>css/style.css" />
+
+    <!-- DataTables stylesheet for table design-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css">
 </head>
 <body>
     <!-- wrapper, to center website -->

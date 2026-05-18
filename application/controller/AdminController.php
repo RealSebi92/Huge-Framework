@@ -16,6 +16,7 @@ class AdminController extends Controller
 
     /**
      * This method controls what happens when you move to /admin or /admin/index in your app.
+     * Now it doesn't just get the Profiles, but also the account types
      */
     public function index()
     {

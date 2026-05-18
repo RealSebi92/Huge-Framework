@@ -14,6 +14,8 @@ class UserModel
      * @see http://davidwalsh.name/php-shorthand-if-else-ternary-operators
      *
      * @return array The profiles of all users
+     * 
+     * Now also selects the account type of the user and saves it in the user profile object
      */
     public static function getPublicProfilesOfAllUsers()
     {
@@ -341,7 +343,10 @@ class UserModel
         // return one row (we only have one result or nothing)
         return $query->fetch();
     }
-
+    /**
+     * Gets all available account types from the database.
+     * With this role names are now dynamic
+     */
     public static function getAllAccountTypes(){
         $database = DatabaseFactory::getFactory()->getConnection();
 
@@ -352,6 +357,11 @@ class UserModel
 
         return $query->fetchAll();
     }
+
+    /**
+     * Update account type of a selected user.
+     * Admins use this to change user roles.
+     */
 
     public static function changeUserAccountType($user_id, $user_account_type){
         $database = DatabaseFactory::getFactory()->getConnection();

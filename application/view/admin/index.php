@@ -13,7 +13,7 @@
             or suspend a user.
         </div>
         <div>
-            <table class="overview-table">
+            <table id="usersTable" class="overview-table">
                 <thead>
                 <tr>
                     <td>Id</td>
@@ -21,7 +21,7 @@
                     <td>Username</td>
                     <td>User's email</td>
                     <td>Activated ?</td>
-                    <td>Account Type</td>
+                    <td>Account Type</td> <!-- Added column for admin role managment-->
                     <td>Link to user's profile</td>
                     <td>suspension Time in days</td>
                     <td>Soft delete</td>
@@ -39,11 +39,14 @@
                         <td><?= $user->user_name; ?></td>
                         <td><?= $user->user_email; ?></td>
                         <td><?= ($user->user_active == 0 ? 'No' : 'Yes'); ?></td>
+                        
                         <td>
                             <form method="post" action="<?= Config::get('URL'); ?>profile/changeUserRole">
                                 <input type="hidden" name="user_id" value="<?= $user->user_id; ?>">
 
+                                <!-- Dropdown for role change-->
                                 <select name="user_account_type" onchange="this.form.submit()">
+                                    <!-- Creates one dropdown option for each account type from the database -->
                                     <?php foreach ($this->account_types as $account_type) { ?>
                                         <option value="<?= $account_type->type_id; ?>"
                                             <?php if ($user->user_account_type == $account_type->type_id) echo 'selected'; ?>>
@@ -67,6 +70,12 @@
                     </tr>
                 <?php } ?>
             </table>
+            <!-- Initialize DataTable-->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    new DataTable('#usersTable');
+                });
+            </script>
         </div>
     </div>
 </div>
