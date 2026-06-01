@@ -34,6 +34,18 @@
                 <li <?php if (View::checkForActiveController($filename, "note")) { echo ' class="active" '; } ?> >
                     <a href="<?php echo Config::get('URL'); ?>note/index">My Notes</a>
                 </li>
+                <?php $unread_count = MessengerModel::getUnreadMessageCount(Session::get('user_id')); ?>
+                <li <?php if (View::checkForActiveController($filename, "messenger")) { echo ' class="active" '; } ?> >
+                    <a href="<?php echo Config::get('URL'); ?>messenger/index">
+                        Messenger
+                        <?php if ($unread_count > 0) { ?>
+                            <span style="background:red; color:white; border-radius:50%; padding:2px 6px; margin-left:4px; font-size:11px;">
+                                <?php echo $unread_count; ?>
+                            </span>
+                        <?php } ?>
+                    </a>
+                </li>
+
             <?php } else { ?>
                 <!-- for not logged in users -->
                 <li <?php if (View::checkForActiveControllerAndAction($filename, "login/index")) { echo ' class="active" '; } ?> >

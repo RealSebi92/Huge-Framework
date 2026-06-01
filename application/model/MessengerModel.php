@@ -77,4 +77,41 @@ class MessengerModel
 
         $query->execute(array(':sender_user_id' => $sender_user_id, ':receiver_user_id' => $receiver_user_id, ':message_text' => $message_text));
     }
+
+   public static function markMessagesAsRead($current_user_id, $partner_user_id)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "UPDATE message
+            SET is_read = 1
+            WHERE receiver_user_id = :current_user_id
+            AND sender_user_id = :partner_user_id
+            AND is_read = 0";
+
+        $query = $database->prepare($sql);
+
+        $query->execute(array(
+            ':current_user_id' => $current_user_id,
+            ':partner_user_id' => $partner_user_id
+        ));
+    }
+
+    public static function getUnreadMessageCount($current_user_id)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "SELECT COUNT(*) AS unread_count
+            FROM message
+            WHERE receiver_user_id = :current_user_id
+            AND is_read = 0";
+
+        $query = $database->prepare($sql);
+
+        $query->execute(array(
+            ':current_user_id' => $current_user_id
+        ));
+
+        return $query->fetch()->unread_count;
+}
+
 }

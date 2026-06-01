@@ -15,17 +15,22 @@ class MessengerController extends Controller{
         $this->View->render('messenger/index', array('users' => $users)); // View bekommt user liste und kann diese dann anzeigen
     }
 
-    public function chat($partner_user_id){
-
+    public function chat($partner_user_id)
+    {
         $current_user_id = Session::get('user_id');
-        
+
+        MessengerModel::markMessagesAsRead($current_user_id, $partner_user_id);
+
         $messages = MessengerModel::getMessagesBetweenUsers($current_user_id, $partner_user_id);
 
         $partner = MessengerModel::getUserById($partner_user_id);
 
-        $this->View->render('messenger/chat', array('messages' => $messages, 'partner' => $partner, 'current_user_id' => $current_user_id));
+        $this->View->render('messenger/chat', array(
+            'messages' => $messages,
+            'partner' => $partner,
+            'current_user_id' => $current_user_id
+        ));
     }
-
     public function sendMessage(){
         $sender_user_id = Session::get('user_id');
         $receiver_user_id = Request::post('receiver_user_id');
