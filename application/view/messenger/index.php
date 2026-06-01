@@ -14,7 +14,7 @@
             <!-- geht jeden User aus der User-Liste einzeln durch -->
             <?php foreach($users as $user) { ?>
             <li>
-                <!-- öffnet später den chat (muss noch implementiert werden) -->
+                <!-- öffnet  den chat -->
                 <a href="<?php echo Config::get('URL'); ?>messenger/chat/<?php echo $user->user_id; ?>">
                     <!-- gibt den username aus -->
                     <?php echo htmlentities($user->user_name); ?>
@@ -28,3 +28,30 @@
     <?php } ?>
     </div>
 </div>
+
+<?php
+$groups = MessengerModel::getUserGroups(Session::get('user_id'));
+?>
+
+<h2>Gruppen</h2>
+
+<?php if (!empty($groups)) { ?>
+    <ul>
+        <?php foreach ($groups as $group) { ?>
+            <li>
+                <a href="<?php echo Config::get('URL'); ?>messenger/groupChat/<?php echo $group->group_id; ?>">
+                    <?php echo htmlspecialchars($group->group_name); ?>
+                </a>
+            </li>
+        <?php } ?>
+    </ul>
+<?php } else { ?>
+    <p>Du bist in keiner Gruppe.</p>
+<?php } ?>
+
+<h2>Neue Gruppe erstellen</h2>
+
+<form action="<?php echo Config::get('URL'); ?>messenger/createGroup" method="post">
+    <input type="text" name="group_name" placeholder="Gruppenname">
+    <button type="submit">Gruppe erstellen</button>
+</form>
