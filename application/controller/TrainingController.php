@@ -6,31 +6,29 @@ class TrainingController extends Controller
     {
         Auth::checkAuthentication();
 
-        $this->View->render('training/index');
+        $user_id = Session::get('user_id');
+        $trainings = TrainingModel::getTrainingsByUser($user_id);
+
+        $this->View->render('training/index', [
+            'trainings' => $trainings
+        ]);
     }
 
     /**
-     * Erstellt neue Trainingseinheit
+     * Erstellt eine neue Trainingseinheit.
      */
     public function create()
     {
         Auth::checkAuthentication();
 
-        if(isset($_POST["training_erstellen"]))
-        {
+        if (isset($_POST["training_erstellen"])) {
             $user_id = Session::get('user_id');
-            $title = $_POST('title');
-            $traning_data = $_POST('training_date');
+            $title = $_POST["title"];
+            $training_date = $_POST["training_date"];
 
-            Training::createTraining($user_id, $title, $traning_data);
+            TrainingModel::createTraining($user_id, $title, $training_date);
         }
 
         Redirect::to('training/index');
-
     }
-
-   
 }
-
-
-?>
