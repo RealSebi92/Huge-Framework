@@ -48,6 +48,20 @@
                 <li <?php if (View::checkForActiveController($filename, "gallery")) { echo ' class="active" '; } ?> >
                     <a href="<?php echo Config::get('URL'); ?>gallery/index">Gallery</a>
                 </li>
+                <li <?php if (View::checkForActiveController($filename, "training") || View::checkForActiveController($filename, "exercise") || View::checkForActiveController($filename, "calendar")) { echo ' class="active" '; } ?> >
+                    <a href="#">Fitness Tracker</a>
+                    <ul class="navigation-submenu">
+                        <li>
+                            <a href="<?php echo Config::get('URL'); ?>training/index">Training</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo Config::get('URL'); ?>exercise/index">Übungen</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo Config::get('URL'); ?>calendar/index">Kalender</a>
+                        </li>
+                    </ul>
+                </li>
 
 
             <?php } else { ?>

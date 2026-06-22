@@ -5,7 +5,7 @@ class ExerciseController extends Controller
 
     public function index()
     {
-        Auth::checkAdminAuthentication();
+        Auth::checkAuthentication();
 
         $exercises = ExerciseModel::getAllExercises();
 
