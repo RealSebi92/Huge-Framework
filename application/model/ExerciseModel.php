@@ -33,4 +33,37 @@ class ExerciseModel{
 
         return $query->fetchAll();
     }
+
+    public static function updateExercise($id, $name, $description, $muscle_group)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "UPDATE exercises
+                SET name = :name,
+                description = :description,
+                muscle_group = :muscle_group
+                WHERE id = :id";
+
+        $query = $database->prepare($sql);
+
+        return $query->execute([
+            ':id' => $id,
+            ':name' => $name,
+            ':description' => $description,
+            ':muscle_group' => $muscle_group
+        ]);
+    }
+
+    public static function deleteExercise($id)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "DELETE FROM exercises WHERE id = :id";
+
+        $query = $database->prepare($sql);
+
+        return $query->execute([
+            ':id' => $id
+        ]);
+    }
 }

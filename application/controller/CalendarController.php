@@ -11,9 +11,11 @@ class CalendarController extends Controller
 
         $user_id = Session::get('user_id');
         $training_days = CalendarModel::getTrainingDays($user_id,);
+        $trainings = TrainingModel::getTrainingsByUser($user_id);
 
         $this->View->render('calendar/index', [
-            'training_days' => $training_days
+            'training_days' => $training_days,
+            'trainings' => $trainings
         ]);
     }
 
@@ -26,10 +28,11 @@ class CalendarController extends Controller
 
         if (isset($_POST["status_speichern"])) {
             $user_id = Session::get('user_id');
+            $training_id = $_POST["training_id"];
             $training_date = date("Y-m-d");
             $trained = $_POST["trained"];
 
-            CalendarModel::saveTrainingStatus($user_id, $training_date, $trained);
+            CalendarModel::saveTrainingStatus($user_id, $training_id, $training_date, $trained);
         }
 
         Redirect::to('calendar/index');

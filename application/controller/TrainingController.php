@@ -35,6 +35,20 @@ class TrainingController extends Controller
     }
 
     /**
+    * Löscht ein Training.
+    */
+    public function delete($training_id)
+    {
+        Auth::checkAuthentication();
+
+        $user_id = Session::get('user_id');
+
+        TrainingModel::deleteTraining($training_id, $user_id);
+
+        Redirect::to('training/index');
+    }
+
+    /**
     * Fügt eine Übung zu einer Trainingseinheit hinzu.
     */
     public function addExercise()
@@ -86,6 +100,22 @@ class TrainingController extends Controller
         }
 
         Redirect::to('training/index');
+    }
+
+    /**
+    * Zeigt die Seite zum Erstellen eines Trainings.
+    */
+    public function createPage()
+    {
+        Auth::checkAuthentication();
+
+        $exercises = ExerciseModel::getAllExercises();
+        $trainings = TrainingModel::getTrainingsByUser(Session::get('user_id'));
+
+        $this->View->render('training/create', [
+            'exercises' => $exercises,
+            'trainings' => $trainings
+        ]);
     }
 
 }

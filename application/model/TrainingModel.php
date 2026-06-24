@@ -45,6 +45,25 @@ class TrainingModel
     }
 
     /**
+    * Löscht ein Training eines Benutzers.
+    */
+    public static function deleteTraining($training_id, $user_id)
+    {
+        $database = DatabaseFactory::getFactory()->getConnection();
+
+        $sql = "DELETE FROM trainings
+                WHERE id = :training_id
+                AND user_id = :user_id";
+
+        $query = $database->prepare($sql);
+
+        return $query->execute([
+            ':training_id' => $training_id,
+            ':user_id' => $user_id
+        ]);
+    }
+
+    /**
     * Fügt eine Übung zu einer Trainingseinheit hinzu.
     */
     public static function addExerciseToTraining($training_id, $exercise_id, $sets, $reps, $weight, $pr)
