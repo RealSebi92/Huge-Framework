@@ -56,6 +56,28 @@ class RegisterController extends Controller
             exit;
         }
 
+        // Google reCAPTCHA prüfen
+        if (empty($_POST['g-recaptcha-response'])) {
+            Session::add('feedback_negative', 'Bitte bestätigen Sie das reCAPTCHA.');
+            Redirect::to('register/index');
+            exit;
+        }
+
+        $recaptcha_secret = '6Ldn_D4tAAAAABIiurKMBmj9yHsHlpAaY6lbOffN';
+        $recaptcha_response = $_POST['g-recaptcha-response'];
+
+        $verify = file_get_contents(
+            'https://www.google.com/recaptcha/api/siteverify?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response
+        );
+
+        $captcha_success = json_decode($verify);
+
+        if (!$captcha_success->success) {
+            Session::add('feedback_negative', 'reCAPTCHA wurde nicht bestätigt.');
+            Redirect::to('register/index');
+            exit;
+        }
+
         $registration_successful = RegistrationModel::registerNewUser();
 
         if($registration_successful){
